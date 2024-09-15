@@ -1,10 +1,11 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { JwtGuard } from 'src/auth/guard';
 
 @Controller('users')
 export class UserController {
-  @UseGuards(AuthGuard('jwt')) // This route is protected by jwt stategy
+  @UseGuards(JwtGuard) // This route is protected by jwt stategy
   @Get('me')
   getMe(@Req() req: Request) {
     /*     console.log({
