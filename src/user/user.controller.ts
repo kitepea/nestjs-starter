@@ -1,16 +1,14 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard) // This route is protected by jwt stategy
 @Controller('users')
 export class UserController {
-  @UseGuards(JwtGuard) // This route is protected by jwt stategy
   @Get('me')
-  getMe(@Req() req: Request) {
-    /*     console.log({
-      user: req.user,
-    }); */
-    return req.user;  // The return of validate in JwtStrategy will be appended to req
+  getMe(@GetUser() user: User) {
+    // The return of GetUser: request.user, is assigned to user
+    return user;
   }
 }
